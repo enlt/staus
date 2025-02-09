@@ -86,6 +86,8 @@
             <Icon 
               icon="ri:line-chart-line"
               :class="[
+})
+</script>
                 'absolute top-3 right-3 w-4 h-4 p-1 rounded-full transition-colors duration-200 box-content cursor-pointer',
                 getStatusClasses(monitor.status).text,
                 getStatusClasses(monitor.status).hover.text,
@@ -612,5 +614,3 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', closeOnClickOutside)
   window.removeEventListener('resize', updateMobileState)
-})
-</script>
