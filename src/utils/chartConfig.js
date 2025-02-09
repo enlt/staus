@@ -179,3 +179,40 @@ export const getResponseTimeChartData = (monitor) => {
 
 /**
  * 响应时间图表配置对象
+ */
+export const responseTimeChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    x: {
+      display: false,
+    },
+    y: {
+      display: true,
+      title: {
+        display: false,
+        text: '响应时间 (ms)'
+      }
+    }
+  },
+  plugins: {
+    legend: {
+      display: false
+    },
+    tooltip: {
+      callbacks: {
+        label: (context) => {
+          let label = context.dataset.label || '';
+
+          if (label) {
+            label += ': ';
+          }
+          if (context.parsed.y !== null) {
+            label += context.parsed.y + ' ms';
+          }
+          return label
+        }
+      }
+    }
+  }
+}
