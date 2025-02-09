@@ -43,17 +43,24 @@
       <div class="flex items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6">
         <div class="min-w-0">
           <div class="flex items-center gap-2">
-            <h2 class="text-lg sm:text-xl font-bold truncate text-gray-800 dark:text-gray-100">
-              {{ monitor.friendly_name }}
-            </h2>
-            <Icon 
-              icon="bi:link-45deg" 
-              class="w-5 h-5 p-1.5 rounded-full transition-colors duration-200
-                text-gray-400 hover:text-gray-600 hover:bg-gray-100
-                dark:text-gray-500 dark:hover:text-gray-400 dark:hover:bg-gray-700/50
-                box-content"
-              @click="openUrl(monitor.url)"
-            />
+            <a 
+              :href="getFinalUrl(monitor.url)" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 group"
+            >
+              <h2 class="text-lg sm:text-xl font-bold truncate text-gray-800 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                {{ monitor.friendly_name }}
+              </h2>
+              <Icon 
+                icon="bi:link-45deg" 
+                class="w-5 h-5 p-1.5 rounded-full transition-colors duration-200
+                  text-gray-400 hover:text-gray-600 hover:bg-gray-100
+                  dark:text-gray-500 dark:hover:text-gray-400 dark:hover:bg-gray-700/50
+                  box-content"
+                @click.stop="openUrl(monitor.url)"
+              />
+            </a>
           </div>
         </div>
         <div class="shrink-0">
@@ -86,8 +93,6 @@
             <Icon 
               icon="ri:line-chart-line"
               :class="[
-})
-</script>
                 'absolute top-3 right-3 w-4 h-4 p-1 rounded-full transition-colors duration-200 box-content cursor-pointer',
                 getStatusClasses(monitor.status).text,
                 getStatusClasses(monitor.status).hover.text,
@@ -512,6 +517,16 @@ const openUrl = (url) => {
 }
 
 /**
+ * 获取最终 URL
+ */
+const getFinalUrl = (url) => {
+  if (!url) return '#'
+  return !url.startsWith('http://') && !url.startsWith('https://')
+    ? 'http://' + url
+    : url
+}
+
+/**
  * 图表相关配置
  */
 const dateRange = computed(() => {
@@ -614,3 +629,5 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', closeOnClickOutside)
   window.removeEventListener('resize', updateMobileState)
+})
+</script>
