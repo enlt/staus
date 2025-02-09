@@ -81,6 +81,7 @@ const animateValue = (start, end, duration, index) => {
     const elapsed = currentTime - startTime
     const progress = Math.min(elapsed / duration, 1)
     
+    // 使用 requestAnimationFrame 的时间戳进行插值计算
     displayValues.value[index] = Math.floor(start + (end - start) * progress)
 
     if (progress < 1) {
@@ -132,20 +133,19 @@ const overviewItems = computed(() => [
 /**
  * 监听每个值的变化
  */
-watch(() => overviewItems.value.map(item => item.value), (newValues, oldValues) => {
+watch(() => overviewItems.value.map(item => item.value), (newValues) => {
+  // 仅当 monitors 发生变化时才启动动画
   newValues.forEach((newVal, index) => {
-    const oldVal = oldValues?.[index] ?? 0
-    if (newVal !== oldVal) {
-      animateValue(oldVal, newVal, 1000, index)
-    }
+    animateValue(displayValues.value[index], newVal, 1000, index)
   })
-}, { immediate: true })
+})
 
 /**
  * 组件挂载时启动动画
  */
 onMounted(() => {
   overviewItems.value.forEach((item, index) => {
+    displayValues.value[index] = item.value // 初始化显示值
     animateValue(0, item.value, 1000, index)
   })
 })
