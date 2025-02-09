@@ -34,7 +34,7 @@
       <div class="flex flex-col items-center gap-1">
         <div>
           <a 
-            :href="pkg.repository.url" 
+            href="https://github.com/luoh-an/Uptime-Status" 
             target="_blank" 
             rel="noopener noreferrer"
             class="font-semibold hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
@@ -48,15 +48,28 @@
             class="font-semibold hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
           >UptimeRobot</a> 接口 | 检测频率 5 分钟
         </div>
-        <div>Copyright © 2025 - {{ new Date().getFullYear() }} </div>
-        <a 
-            :href="pkg.repository.url"
+        <div>
+          Copyright © 2025 - {{ new Date().getFullYear() }} 
+          <a 
+            href="https://github.com/luoh-an"
             target="_blank"
             rel="noopener noreferrer"
             class="font-semibold hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
-        >
-          JLinmr
-        </a>
+          >
+            LuoH-AN
+          </a>
+        </div>
+        <div>
+          原项目由 
+          <a 
+            href="https://github.com/JLinmr/Uptime-Status"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
+          >
+            JLinmr
+          </a> 开发
+        </div>
       </div>
     </div>
   </footer>
