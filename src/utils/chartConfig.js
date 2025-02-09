@@ -4,6 +4,7 @@
  */
 
 import { format } from 'date-fns'
+import { CHART_COLORS, STATUS } from './constants'
 
 /**
  * 图表基础配置对象
@@ -32,15 +33,6 @@ const CHART_CONFIG = {
     pointHoverBorderWidth: 1.5,
     pointHoverBackgroundColor: '#fff'
   },
-  
-  colors: {
-    success: '#10b981',
-    warning: '#eab308',
-    error: '#ef4444',
-    orange: '#ff7a45',
-    gray: 'rgb(120, 120, 120, 0.3)',
-    paused: '#eab308'
-  }
 }
 
 /**
@@ -51,19 +43,19 @@ const CHART_CONFIG = {
  * @returns {string} 颜色代码
  */
 export const getChartColor = (value, isBeforeCreation, status) => {
-  if (isBeforeCreation) return CHART_CONFIG.colors.gray
-  if (status === 0) return CHART_CONFIG.colors.paused  // 使用 status 判断暂停状态
-  if (value === null || isNaN(value)) return CHART_CONFIG.colors.error
+  if (isBeforeCreation) return CHART_COLORS.gray
+  if (status === STATUS.PAUSED) return CHART_COLORS.paused  // 使用 status 判断暂停状态
+  if (value === null || isNaN(value)) return CHART_COLORS.error
   
   const thresholds = [
-    { min: 99.9, color: CHART_CONFIG.colors.success },  // ≥99.9% 绿色
-    { min: 90, color: CHART_CONFIG.colors.warning },    // ≥90% 黄色
-    { min: 0.1, color: CHART_CONFIG.colors.orange }     // >0% 橙色
+    { min: 99.9, color: CHART_COLORS.success },  // ≥99.9% 绿色
+    { min: 90, color: CHART_COLORS.warning },    // ≥90% 黄色
+    { min: 0.1, color: CHART_COLORS.orange }     // >0% 橙色
   ]
   
   // 等于0时显示红色，其他情况按阈值判断
-  if (value === 0) return CHART_CONFIG.colors.error
-  return thresholds.find(t => value >= t.min)?.color || CHART_CONFIG.colors.orange
+  if (value === 0) return CHART_COLORS.error
+  return thresholds.find(t => value >= t.min)?.color || CHART_COLORS.orange
 }
 
 /**
@@ -187,62 +179,3 @@ export const getResponseTimeChartData = (monitor) => {
 
 /**
  * 响应时间图表配置对象
- * @constant {Object}
- */
-export const responseTimeChartOptions = {
-  ...CHART_CONFIG.styles,
-  plugins: {
-    ...CHART_CONFIG.styles.plugins,
-    tooltip: {
-      enabled: true,
-      mode: 'index',
-      intersect: false,
-      callbacks: {
-        title: items => items[0]?.label || '',
-        label: context => context.raw ? `响应时间：${context.raw} ms` : '无数据'
-      }
-    }
-  },
-  scales: {
-    x: {
-      grid: { display: false, drawBorder: false },
-      ticks: {
-        maxRotation: 0,
-        color: 'rgb(156, 163, 175)',
-        padding: 8,
-        maxTicksLimit: 12,
-        font: { size: 11 }
-      }
-    },
-    y: {
-      beginAtZero: true,
-      border: { display: false },
-      grid: {
-        color: 'rgba(229, 231, 235, 0.5)',
-        drawBorder: false,
-        lineWidth: 1
-      },
-      ticks: {
-        color: 'rgb(156, 163, 175)',
-        padding: 8,
-        font: { size: 11 },
-        callback: value => `${value} ms`,
-        maxTicksLimit: 8
-      }
-    }
-  },
-  elements: {
-    line: {
-      tension: 0.4,
-      borderWidth: 1.5,
-      borderCapStyle: 'round',
-      borderJoinStyle: 'round',
-      capBezierPoints: true
-    }
-  },
-  animation: {
-    duration: 600,
-    easing: 'easeInOutCubic',
-    delay: (context) => context.dataIndex * 20
-  }
-} 
