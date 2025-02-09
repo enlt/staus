@@ -90,16 +90,7 @@
         <!-- 响应时间和运行时间统计卡片 -->
         <div class="grid grid-cols-2 gap-4">
           <div class="inner-card relative">
-            <Icon 
-              icon="ri:line-chart-line"
-              :class="[
-                'absolute top-3 right-3 w-4 h-4 p-1 rounded-full transition-colors duration-200 box-content cursor-pointer',
-                getStatusClasses(monitor.status).text,
-                getStatusClasses(monitor.status).hover.text,
-                getStatusClasses(monitor.status).hover.bg
-              ]"
-              @click="openResponseTimeModal(monitor)"
-            />
+            
             <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">平均响应时间</div>
             <div class="text-xl font-bold text-gray-900 dark:text-gray-100">
               {{ formatters.responseTime(monitor.stats?.avgResponseTime) }}
