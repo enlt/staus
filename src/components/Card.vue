@@ -390,7 +390,7 @@ const formatters = {
 /**
  * 获取状态对应的样式类
  */
-const getStatusClasses = computed(() => (status) => {
+const getStatusClasses = (status) => {
   return {
     dot: {
       'bg-green-500 dark:bg-green-400': status === STATUS.ONLINE,
@@ -420,7 +420,7 @@ const getStatusClasses = computed(() => (status) => {
       }
     }
   }
-})
+}
 
 /**
  * 监控类型映射
