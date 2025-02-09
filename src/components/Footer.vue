@@ -48,16 +48,15 @@
             class="font-semibold hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
           >UptimeRobot</a> 接口 | 检测频率 5 分钟
         </div>
-        <div>
-          Copyright © 2025 - {{ new Date().getFullYear() }} <a 
+        <div>Copyright © 2025 - {{ new Date().getFullYear() }} </div>
+        <a 
             :href="pkg.repository.url"
             target="_blank"
             rel="noopener noreferrer"
             class="font-semibold hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
-          >
-            JLinmr
-          </a>
-        </div>
+        >
+          JLinmr
+        </a>
       </div>
     </div>
   </footer>
