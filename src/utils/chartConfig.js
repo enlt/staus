@@ -79,60 +79,64 @@ export const getStatusChartConfig = (monitor, dateRange, isMobile) => {
 
   const pointSize = isMobile ? { radius: 4, hoverRadius: 5 } : { radius: 8, hoverRadius: 10 }
 
-  return {
-    data: {
-      datasets: [{
-        data: data.map((value, i) => ({
-          x: i,
-          y: 50,
-          value: i < daysSinceStart ? null : (value ?? null),
-          date: dateRange.dates[i],
-          status: monitor.status,
-          isBeforeCreation: i < daysSinceStart  // 添加创建前标记
-        })),
-        backgroundColor: data.map((v, i) => 
-          getChartColor(v, i < daysSinceStart, monitor.status)
-        ),
-        borderColor: 'transparent',
-        ...pointSize,
-        pointStyle: 'rectRounded'
-      }]
-    },
-    options: {
-      ...CHART_CONFIG.styles,
-      plugins: {
-        ...CHART_CONFIG.styles.plugins,
-        tooltip: {
-          callbacks: {
-            title: items => format(items[0].raw.date, 'yyyy-MM-dd'),
-            label: context => {
-              if (context.raw.isBeforeCreation) {
-                return '无数据'  // 创建前显示"无数据"
-              }
-              if (context.raw.status === 0) {
-                return '已暂停'  // 然后再判断暂停状态
-              }
-              if (context.raw.value === null) {
-                return '无数据'
-              }
-              return `可用率：${context.raw.value.toFixed(2)}%`
+  const statusChartData = {
+    datasets: [{
+      data: data.map((value, i) => ({
+        x: i,
+        y: 50,
+        value: i < daysSinceStart ? null : (value ?? null),
+        date: dateRange.dates[i],
+        status: monitor.status,
+        isBeforeCreation: i < daysSinceStart  // 添加创建前标记
+      })),
+      backgroundColor: data.map((v, i) => 
+        getChartColor(v, i < daysSinceStart, monitor.status)
+      ),
+      borderColor: 'transparent',
+      ...pointSize,
+      pointStyle: 'rectRounded'
+    }]
+  }
+
+  const statusChartOptions = {
+    ...CHART_CONFIG.styles,
+    plugins: {
+      ...CHART_CONFIG.styles.plugins,
+      tooltip: {
+        callbacks: {
+          title: items => format(items[0].raw.date, 'yyyy-MM-dd'),
+          label: context => {
+            if (context.raw.isBeforeCreation) {
+              return '无数据'  // 创建前显示"无数据"
             }
+            if (context.raw.status === 0) {
+              return '已暂停'  // 然后再判断暂停状态
+            }
+            if (context.raw.value === null) {
+              return '无数据'
+            }
+            return `可用率：${context.raw.value.toFixed(2)}%`
           }
         }
-      },
-      scales: {
-        x: { display: false, min: -0.5, max: 29.5 },
-        y: { display: false, min: 45, max: 55 }
-      },
-      animation: { duration: 200 },
-      elements: {
-        point: {
-          ...pointSize,
-          borderWidth: 0,
-          borderRadius: 4
-        }
+      }
+    },
+    scales: {
+      x: { display: false, min: -0.5, max: 29.5 },
+      y: { display: false, min: 45, max: 55 }
+    },
+    animation: { duration: 200 },
+    elements: {
+      point: {
+        ...pointSize,
+        borderWidth: 0,
+        borderRadius: 4
       }
     }
+  }
+
+  return {
+    data: statusChartData,
+    options: statusChartOptions
   }
 }
 
